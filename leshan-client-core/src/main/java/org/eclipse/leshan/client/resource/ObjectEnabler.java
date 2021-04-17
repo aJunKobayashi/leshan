@@ -67,7 +67,7 @@ import org.eclipse.leshan.core.response.WriteResponse;
  */
 public class ObjectEnabler extends BaseObjectEnabler implements Destroyable, Startable, Stoppable {
 
-    protected Map<Integer, LwM2mInstanceEnabler> instances;
+    public Map<Integer, LwM2mInstanceEnabler> instances;
     protected LwM2mInstanceEnablerFactory instanceFactory;
     protected ContentFormat defaultContentFormat;
 
@@ -376,19 +376,23 @@ public class ObjectEnabler extends BaseObjectEnabler implements Destroyable, Sta
 
                 return BootstrapDeleteResponse.success();
             }
-        } else if (request.getPath().isObjectInstance()) {
-            if (id == LwM2mId.SECURITY) {
-                // For security object, deleting bootstrap Server account is not allowed
-                LwM2mInstanceEnabler instance = instances.get(request.getPath().getObjectInstanceId());
-                if (ServersInfoExtractor.isBootstrapServer(instance)) {
-                    return BootstrapDeleteResponse.badRequest("bootstrap server can not be deleted");
-                }
+} else if (request.getPath().isObjectInstance()) {
+        if (id == LwM2mId.SECURITY) {
+            // For security object, deleting bootstrap Server account is not allowed
+            LwM2mInstanceEnabler instance = instances.get(request.getPath().getObjectInstanceId());
+            if (instance == null) {
+                return BootstrapDeleteResponse.success();
             }
+            if (ServersInfoExtractor.isBootstrapServer(instance)) {
+                return BootstrapDeleteResponse.badRequest("bootstrap server can not be deleted");
+            }
+        }
             if (null != instances.remove(request.getPath().getObjectInstanceId())) {
                 fireInstancesRemoved(request.getPath().getObjectInstanceId());
                 return BootstrapDeleteResponse.success();
             } else {
-                return BootstrapDeleteResponse.badRequest(String.format("Instance %s not found", request.getPath()));
+                return BootstrapDeleteResponse.success();
+                // return BootstrapDeleteResponse.badRequest(String.format("Instance %s not found", request.getPath()));
             }
         }
         return BootstrapDeleteResponse.badRequest(String.format("unexcepted path %s", request.getPath()));

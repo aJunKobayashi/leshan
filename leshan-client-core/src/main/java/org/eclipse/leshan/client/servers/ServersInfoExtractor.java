@@ -36,8 +36,10 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.EnumSet;
 import java.util.Map;
 
+import org.eclipse.leshan.client.object.Security;
 import org.eclipse.leshan.client.resource.LwM2mInstanceEnabler;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
+import org.eclipse.leshan.client.resource.ObjectEnabler;
 import org.eclipse.leshan.core.CertificateUsage;
 import org.eclipse.leshan.core.LwM2mId;
 import org.eclipse.leshan.core.SecurityMode;
