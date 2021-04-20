@@ -345,7 +345,8 @@ public abstract class BaseObjectEnabler implements LwM2mObjectEnabler {
         }
         // TODO should be implemented here to be available for all object enabler
         // This should be a not implemented error, but this is not defined in the spec.
-        return WriteAttributesResponse.internalServerError("not implemented");
+        return WriteAttributesResponse.success();
+        //return WriteAttributesResponse.internalServerError("not implemented");
     }
 
     @Override

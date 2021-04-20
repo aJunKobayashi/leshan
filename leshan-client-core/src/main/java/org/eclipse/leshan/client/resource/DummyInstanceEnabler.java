@@ -134,6 +134,11 @@ public class DummyInstanceEnabler extends SimpleInstanceEnabler {
 
     @Override
     protected long createDefaultIntegerValueFor(ObjectModel objectModel, ResourceModel resourceModel) {
+        if (objectModel.id == 5 && resourceModel.id == 3) {
+            // Firmware State
+            return 2; // downloaded
+        }
+
         return (long) (Math.random() * 100 % 101);
     }
 
