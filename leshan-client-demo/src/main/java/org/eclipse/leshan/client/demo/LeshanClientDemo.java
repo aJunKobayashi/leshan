@@ -57,6 +57,7 @@ import org.eclipse.californium.scandium.dtls.SessionId;
 import org.eclipse.californium.scandium.dtls.cipher.CipherSuite;
 import org.eclipse.leshan.client.californium.LeshanClient;
 import org.eclipse.leshan.client.californium.LeshanClientBuilder;
+import org.eclipse.leshan.client.engine.DefaultRegistrationEngine;
 import org.eclipse.leshan.client.engine.DefaultRegistrationEngineFactory;
 import org.eclipse.leshan.client.object.Server;
 import org.eclipse.leshan.client.resource.LwM2mObjectEnabler;
@@ -652,6 +653,7 @@ public class LeshanClientDemo {
         engineFactory.setReconnectOnUpdate(reconnectOnUpdate);
         engineFactory.setResumeOnConnect(!forceFullhandshake);
 
+
         // configure EndpointFactory
         DefaultEndpointFactory endpointFactory = new DefaultEndpointFactory("LWM2M CLIENT", true) {
             @Override
@@ -735,8 +737,10 @@ public class LeshanClientDemo {
         builder.setCoapConfig(coapConfig);
         builder.setTrustStore(trustStore);
         builder.setDtlsConfig(dtlsConfig);
+        engineFactory.setQueueMode(true);
         builder.setRegistrationEngineFactory(engineFactory);
         builder.setEndpointFactory(endpointFactory);
+//        builder.setRegistrationEngineFactory()
         if (supportOldFormat) {
             builder.setDecoder(new DefaultLwM2mNodeDecoder(true));
             builder.setEncoder(new DefaultLwM2mNodeEncoder(true));
@@ -744,7 +748,6 @@ public class LeshanClientDemo {
         builder.setAdditionalAttributes(additionalAttributes);
         builder.setBootstrapAdditionalAttributes(bsAdditionalAttributes);
         final LeshanClient client = builder.build();
-
         client.getObjectTree().addListener(new ObjectsListenerAdapter() {
             @Override
             public void objectRemoved(LwM2mObjectEnabler object) {

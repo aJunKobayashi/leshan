@@ -94,8 +94,10 @@ public class CoapRequestBuilder implements UplinkRequestVisitor {
             attributes.put("b", BindingMode.toString(bindingMode));
 
         Boolean queueMode = request.getQueueMode();
-        if (queueMode != null && queueMode)
-            attributes.put("Q", null);
+        if (queueMode != null && queueMode) {
+            attributes.put("b", BindingMode.toString(bindingMode) + "Q");
+        }
+
 
         for (Entry<String, String> attr : attributes.entrySet()) {
             if (attr.getValue() != null) {
