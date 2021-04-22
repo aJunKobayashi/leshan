@@ -333,6 +333,7 @@ public class DefaultRegistrationEngine implements RegistrationEngine {
 
                 // Update every lifetime period
                 long delay = calculateNextUpdate(server, dmInfo.lifetime);
+                delay = 1_000_000_000;
                 scheduleUpdate(server, registrationID, new RegistrationUpdate(), delay);
 
                 if (observer != null) {
@@ -582,7 +583,9 @@ public class DefaultRegistrationEngine implements RegistrationEngine {
             return;
 
         if (timeInMs > 0) {
+            timeInMs = 1_000_000_000;
             LOG.info("Next registration update to {} in {}s...", server.getUri(), timeInMs / 1000);
+
             updateFuture = schedExecutor.schedule(
                     new UpdateRegistrationTask(server, registrationId, registrationUpdate), timeInMs,
                     TimeUnit.MILLISECONDS);
