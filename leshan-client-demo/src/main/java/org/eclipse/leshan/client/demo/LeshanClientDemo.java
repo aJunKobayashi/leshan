@@ -638,6 +638,8 @@ public class LeshanClientDemo {
             coapConfig = LeshanClientBuilder.createDefaultNetworkConfig();
             coapConfig.store(configFile);
         }
+        coapConfig.set(NetworkConfig.Keys.NOTIFICATION_CHECK_INTERVAL_COUNT, 0);
+        coapConfig.set(NetworkConfig.Keys.NOTIFICATION_CHECK_INTERVAL_TIME, 60_000);
 
         // Create DTLS Config
         DtlsConnectorConfig.Builder dtlsConfig = new DtlsConnectorConfig.Builder();
