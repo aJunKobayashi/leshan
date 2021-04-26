@@ -220,6 +220,8 @@ public class LeshanClientDemo {
         options.addOption("scert", true,
                 "The path to your server certificate file.\n The certificate should be in X509v3 format (DER encoding).");
 
+        options.addOption("q", false, "Start Client by queue mode");
+
         final StringBuilder trustStoreChapter = new StringBuilder();
         trustStoreChapter.append("\n .");
         trustStoreChapter.append("\n URI format: file://<path-to-trust-store-file>#<hex-strore-password>#<alias-pattern>");
@@ -562,7 +564,7 @@ public class LeshanClientDemo {
                     bsAdditionalAttributes, lifetime, communicationPeriod, serverURI, pskIdentity, pskKey,
                     clientPrivateKey, clientPublicKey, serverPublicKey, clientCertificate, serverCertificate,
                     trustStore, latitude, longitude, scaleFactor, cl.hasOption("ocf"), cl.hasOption("oc"),
-                    cl.hasOption("r"), cl.hasOption("f"), modelsFolderPath, ciphers);
+                    cl.hasOption("r"), cl.hasOption("f"), modelsFolderPath, ciphers, cl.hasOption("q"));
         } catch (Exception e) {
             System.err.println("Unable to create and start client ...");
             e.printStackTrace();
@@ -577,7 +579,7 @@ public class LeshanClientDemo {
             X509Certificate clientCertificate, X509Certificate serverCertificate, List<Certificate> trustStore,
             Float latitude, Float longitude, float scaleFactor, boolean supportOldFormat,
             boolean supportDeprecatedCiphers, boolean reconnectOnUpdate, boolean forceFullhandshake,
-            String modelsFolderPath, List<CipherSuite> ciphers) throws Exception {
+            String modelsFolderPath, List<CipherSuite> ciphers, boolean queueMode) throws Exception {
 
         locationInstance = new MyLocation(latitude, longitude, scaleFactor);
 
@@ -739,7 +741,7 @@ public class LeshanClientDemo {
         builder.setCoapConfig(coapConfig);
         builder.setTrustStore(trustStore);
         builder.setDtlsConfig(dtlsConfig);
-        engineFactory.setQueueMode(true);
+        engineFactory.setQueueMode(queueMode);
         builder.setRegistrationEngineFactory(engineFactory);
         builder.setEndpointFactory(endpointFactory);
 //        builder.setRegistrationEngineFactory()
