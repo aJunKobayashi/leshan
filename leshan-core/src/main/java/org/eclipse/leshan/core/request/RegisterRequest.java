@@ -102,14 +102,7 @@ public class RegisterRequest extends AbstractLwM2mRequest<RegisterResponse> impl
 
         // handle queue mode param
         Version version = Version.get(lwVersion);
-        if (version.equals(Version.V1_0)) {
-            if (queueMode != null)
-                throw new InvalidRequestException("QueueMode is not defined in LWM2M v1.0");
-            else
-                this.queueMode = null;
-        } else {
-            this.queueMode = queueMode == null ? false : queueMode;
-        }
+        this.queueMode = queueMode == null ? false : queueMode;
 
         this.endpointName = endpointName;
         this.lifetime = lifetime;

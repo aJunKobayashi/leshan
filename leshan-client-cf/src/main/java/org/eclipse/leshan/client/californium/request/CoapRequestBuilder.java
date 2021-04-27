@@ -95,7 +95,12 @@ public class CoapRequestBuilder implements UplinkRequestVisitor {
 
         Boolean queueMode = request.getQueueMode();
         if (queueMode != null && queueMode) {
-            attributes.put("b", BindingMode.toString(bindingMode) + "Q");
+            double dLwVersion = Double.parseDouble(lwVersion);
+            if (dLwVersion < 1.1) {
+                attributes.put("b", BindingMode.toString(bindingMode) + "Q");
+            } else {
+                attributes.put("Q", null);
+            }
         }
 
 
