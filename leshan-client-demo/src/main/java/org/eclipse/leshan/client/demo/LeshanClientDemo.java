@@ -222,6 +222,9 @@ public class LeshanClientDemo {
 
         options.addOption("q", false, "Start Client by queue mode");
 
+        options.addOption("v", true,
+                "Set LwM2M version to use. default is latest");
+
         final StringBuilder trustStoreChapter = new StringBuilder();
         trustStoreChapter.append("\n .");
         trustStoreChapter.append("\n URI format: file://<path-to-trust-store-file>#<hex-strore-password>#<alias-pattern>");
@@ -556,6 +559,14 @@ public class LeshanClientDemo {
             }
         }
 
+        String lwM2MVersion = LwM2m.Version.lastSupported().toString();
+        if (cl.hasOption("v")) {
+            String temp=  (cl.getOptionValue("v"));
+            if (temp != null && !temp.isEmpty()){
+                lwM2MVersion = temp;
+            }
+        }
+
         // Get models folder
         String modelsFolderPath = cl.getOptionValue("m");
 
@@ -564,7 +575,7 @@ public class LeshanClientDemo {
                     bsAdditionalAttributes, lifetime, communicationPeriod, serverURI, pskIdentity, pskKey,
                     clientPrivateKey, clientPublicKey, serverPublicKey, clientCertificate, serverCertificate,
                     trustStore, latitude, longitude, scaleFactor, cl.hasOption("ocf"), cl.hasOption("oc"),
-                    cl.hasOption("r"), cl.hasOption("f"), modelsFolderPath, ciphers, cl.hasOption("q"));
+                    cl.hasOption("r"), cl.hasOption("f"), modelsFolderPath, ciphers, cl.hasOption("q"), lwM2MVersion);
         } catch (Exception e) {
             System.err.println("Unable to create and start client ...");
             e.printStackTrace();
@@ -579,7 +590,7 @@ public class LeshanClientDemo {
             X509Certificate clientCertificate, X509Certificate serverCertificate, List<Certificate> trustStore,
             Float latitude, Float longitude, float scaleFactor, boolean supportOldFormat,
             boolean supportDeprecatedCiphers, boolean reconnectOnUpdate, boolean forceFullhandshake,
-            String modelsFolderPath, List<CipherSuite> ciphers, boolean queueMode) throws Exception {
+            String modelsFolderPath, List<CipherSuite> ciphers, boolean queueMode, String lwM2MVersion) throws Exception {
 
         locationInstance = new MyLocation(latitude, longitude, scaleFactor);
 
@@ -742,6 +753,7 @@ public class LeshanClientDemo {
         builder.setTrustStore(trustStore);
         builder.setDtlsConfig(dtlsConfig);
         engineFactory.setQueueMode(queueMode);
+        engineFactory.setLwM2MVersion(lwM2MVersion);
         builder.setRegistrationEngineFactory(engineFactory);
         builder.setEndpointFactory(endpointFactory);
 //        builder.setRegistrationEngineFactory()

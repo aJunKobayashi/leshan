@@ -23,6 +23,7 @@ import org.eclipse.leshan.client.bootstrap.BootstrapHandler;
 import org.eclipse.leshan.client.observer.LwM2mClientObserver;
 import org.eclipse.leshan.client.request.LwM2mRequestSender;
 import org.eclipse.leshan.client.resource.LwM2mObjectTree;
+import org.eclipse.leshan.core.LwM2m;
 import org.eclipse.leshan.core.request.ContentFormat;
 
 /**
@@ -41,6 +42,7 @@ public class DefaultRegistrationEngineFactory implements RegistrationEngineFacto
     private boolean resumeOnConnect = true;
     private boolean queueMode = false;
     private ContentFormat preferredContentFormat = ContentFormat.SENML_CBOR;
+    private String lwM2MVersion = LwM2m.Version.lastSupported().toString();
 
     public DefaultRegistrationEngineFactory() {
     }
@@ -53,7 +55,7 @@ public class DefaultRegistrationEngineFactory implements RegistrationEngineFacto
         return new DefaultRegistrationEngine(endpoint, objectTree, endpointsManager, requestSender, bootstrapState,
                 observer, additionalAttributes, bsAdditionalAttributes, sharedExecutor, requestTimeoutInMs,
                 deregistrationTimeoutInMs, bootstrapSessionTimeoutInSec, retryWaitingTimeInMs, communicationPeriodInMs,
-                reconnectOnUpdate, resumeOnConnect, queueMode, preferredContentFormat);
+                reconnectOnUpdate, resumeOnConnect, queueMode, preferredContentFormat, lwM2MVersion);
     }
 
     /**
@@ -164,6 +166,11 @@ public class DefaultRegistrationEngineFactory implements RegistrationEngineFacto
      */
     public DefaultRegistrationEngineFactory setQueueMode(boolean enable) {
         this.queueMode = enable;
+        return this;
+    }
+
+    public DefaultRegistrationEngineFactory setLwM2MVersion(String version) {
+        this.lwM2MVersion = version;
         return this;
     }
 

@@ -94,6 +94,7 @@ public class DefaultRegistrationEngine implements RegistrationEngine {
     private boolean resumeOnConnect;
     // True if client use queueMode : for now this just add Q parameter on register request.
     private final boolean queueMode;
+    private final String lwM2MVersion;
 
     private static enum Status {
         SUCCESS, FAILURE, TIMEOUT
@@ -131,7 +132,7 @@ public class DefaultRegistrationEngine implements RegistrationEngine {
             Integer communicationPeriodInMs, boolean reconnectOnUpdate, boolean resumeOnConnect) {
         this(endpoint, objectTree, endpointsManager, requestSender, bootstrapState, observer, additionalAttributes,
                 null, executor, requestTimeoutInMs, deregistrationTimeoutInMs, bootstrapSessionTimeoutInSec,
-                retryWaitingTimeInMs, communicationPeriodInMs, reconnectOnUpdate, resumeOnConnect, false, null);
+                retryWaitingTimeInMs, communicationPeriodInMs, reconnectOnUpdate, resumeOnConnect, false, null, Version.lastSupported().toString());
     }
 
     /** @since 1.1 */
@@ -141,7 +142,7 @@ public class DefaultRegistrationEngine implements RegistrationEngine {
             ScheduledExecutorService executor, long requestTimeoutInMs, long deregistrationTimeoutInMs,
             int bootstrapSessionTimeoutInSec, int retryWaitingTimeInMs, Integer communicationPeriodInMs,
             boolean reconnectOnUpdate, boolean resumeOnConnect, boolean useQueueMode,
-            ContentFormat preferredContentFormat) {
+            ContentFormat preferredContentFormat, String lwM2MVersion) {
         this.endpoint = endpoint;
         this.objectEnablers = objectTree.getObjectEnablers();
         this.bootstrapHandler = bootstrapState;
@@ -161,6 +162,7 @@ public class DefaultRegistrationEngine implements RegistrationEngine {
         this.resumeOnConnect = resumeOnConnect;
         this.queueMode = useQueueMode;
         this.preferredContentFormat = preferredContentFormat;
+        this.lwM2MVersion = lwM2MVersion;
 
         if (executor == null) {
             schedExecutor = createScheduledExecutor();
@@ -310,7 +312,7 @@ public class DefaultRegistrationEngine implements RegistrationEngine {
         try {
             EnumSet<BindingMode> supportedBindingMode = ServersInfoExtractor
                     .getDeviceSupportedBindingMode(objectEnablers.get(LwM2mId.DEVICE), 0);
-            request = new RegisterRequest(endpoint, dmInfo.lifetime, Version.lastSupported().toString(),
+            request = new RegisterRequest(endpoint, dmInfo.lifetime, lwM2MVersion,
                     supportedBindingMode, queueMode, null,
                     LinkFormatHelper.getClientDescription(objectEnablers.values(), null), additionalAttributes);
             if (observer != null) {
