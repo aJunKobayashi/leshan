@@ -89,7 +89,7 @@ public class LeshanClientDemo {
                             "LWM2M_DevCapMgmt-v1_0_1.xml", "LWM2M_Portfolio-v1_0_1.xml",
                             "LwM2M_BinaryAppDataContainer-v1_0_1.xml", "LwM2M_EventLog-v1_0_1.xml",
                             "LWM2M_VirtualObserveNotify-v1_0.xml",
-
+                            "25.xml", "26.xml",
                             "500.xml", "501.xml",
 
                             "2048.xml", "2049.xml", "2050.xml", "2051.xml", "2052.xml", "2053.xml", "2054.xml",
