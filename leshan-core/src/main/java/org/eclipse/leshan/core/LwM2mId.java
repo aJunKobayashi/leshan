@@ -31,7 +31,9 @@ public interface LwM2mId {
     public static final int LOCATION = 6;
     public static final int CONNECTIVITY_STATISTICS = 7;
     public static final int SOFTWARE_MANAGEMENT = 9;
+    public static final int BINARY_APP_DATA_CONTAINER = 19;
     public static final int LWM2M_GATEWAY = 25;
+
 
     /* SECURITY RESOURCES */
 

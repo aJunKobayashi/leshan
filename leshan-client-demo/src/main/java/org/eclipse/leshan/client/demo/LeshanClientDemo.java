@@ -642,6 +642,7 @@ public class LeshanClientDemo {
         initializer.setInstancesForObject(OBJECT_ID_TEMPERATURE_SENSOR, new RandomTemperatureSensor());
         initializer.setInstancesForObject(FIRMWARE, new MyFirmware());
         initializer.setInstancesForObject(LWM2M_GATEWAY, new MyLwM2MGateway(), new MyLwM2MGateway());
+        initializer.setInstancesForObject(BINARY_APP_DATA_CONTAINER, new MyBinaryAppContainer());
         List<LwM2mObjectEnabler> enablers = initializer.createAll();
 
         // Create CoAP Config
