@@ -11,6 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -137,8 +143,30 @@ public class MyFirmware extends BaseInstanceEnabler {
                 self.mState = StateEnum.DOWNLOADING.val;
                 fireResourcesChange(ResourceID.STATE.val);
                 self.updateDownloadedState();
+                self.downloadFirmwareImage();
+
             }
         }, 1_000);
+    }
+
+    private void downloadFirmwareImage() {
+        // URLを作成してGET通信を行う
+        try {
+            URL url = new URL(this.mPackageURI);
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod("GET");
+            http.connect();
+
+// サーバーからのレスポンスを標準出力へ出す
+            BufferedReader reader = new BufferedReader(new InputStreamReader(http.getInputStream()));
+            String xml = "", line = "";
+            while ((line = reader.readLine()) != null)
+                xml += line;
+            System.out.println(xml);
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateDownloadedState() {
@@ -149,6 +177,7 @@ public class MyFirmware extends BaseInstanceEnabler {
                 LOG.info("Read on Firmware State is changed to Downloaded");
                 self.mState = StateEnum.DOWNLOADED.val;
                 fireResourcesChange(ResourceID.STATE.val);
+
             }
         }, 30_000);
     }
