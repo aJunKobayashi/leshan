@@ -4,8 +4,11 @@ import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.client.servers.ServerIdentity;
 import org.eclipse.leshan.core.model.ObjectModel;
 import org.eclipse.leshan.core.model.ResourceModel;
+import org.eclipse.leshan.core.node.LwM2mResource;
+import org.eclipse.leshan.core.node.LwM2mResourceInstance;
 import org.eclipse.leshan.core.node.ObjectLink;
 import org.eclipse.leshan.core.response.ReadResponse;
+import org.eclipse.leshan.core.response.WriteResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,6 +100,28 @@ public class MyBinaryAppContainer  extends BaseInstanceEnabler {
             default:
                 return super.read(identity, resourceid);
         }
+    }
+
+    @Override
+    public WriteResponse write(ServerIdentity identity, int resourceid, LwM2mResource value) {
+        LOG.info("Write on Firmware resource /{}/{}/{}", getModel().id, getId(), resourceid);
+        MyBinaryAppContainer.ResourceID id = MyBinaryAppContainer.ResourceID.convertID(resourceid);
+        switch(id) {
+            case DATA:
+                Map<Integer, LwM2mResourceInstance> map = value.getInstances();
+                Set<Integer> keys = map.keySet();
+                for (Iterator<Integer> n = keys.iterator(); n.hasNext();)
+                {
+                    Integer i =n.next();
+                    byte[] newValue = (byte[])map.get(i).getValue();
+                    if (!newValue.equals(mData[i])) {
+                        mData[i] = newValue;
+                    }
+                    System.out.println(n.next());
+                }
+                return WriteResponse.success();
+        }
+        return WriteResponse.notFound();
     }
 
     @Override
