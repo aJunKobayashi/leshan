@@ -89,7 +89,7 @@ public class RegisterRequest extends AbstractLwM2mRequest<RegisterResponse> impl
                     endpointName);
 
         String err = Version.validate(lwVersion);
-        if (err != null) {
+        if (false) {
             throw new InvalidRequestException("Invalid LWM2M version: %s", err);
         }
 
