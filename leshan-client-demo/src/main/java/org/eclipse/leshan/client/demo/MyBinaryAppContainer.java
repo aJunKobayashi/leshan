@@ -117,7 +117,6 @@ public class MyBinaryAppContainer  extends BaseInstanceEnabler {
                     if (!newValue.equals(mData[i])) {
                         mData[i] = newValue;
                     }
-                    System.out.println(n.next());
                 }
                 return WriteResponse.success();
         }
