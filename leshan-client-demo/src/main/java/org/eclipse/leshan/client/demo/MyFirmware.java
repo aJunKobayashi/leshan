@@ -204,7 +204,7 @@ public class MyFirmware extends BaseInstanceEnabler {
             case UPDATE:
                 try {
                     Thread.sleep(10_000);
-                    mUpdateResult = UpdateResultEnum.FirmwareUpdated.val;
+                    mUpdateResult = UpdateResultEnum.FirmwareUpdateFailed.val;
                     mState = StateEnum.IDLE.val;
                     mPkgName = "Updated LeshanPkg";
                     mPkgVersion = "2.0.0";
