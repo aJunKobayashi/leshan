@@ -642,7 +642,9 @@ public class LeshanClientDemo {
         initializer.setInstancesForObject(OBJECT_ID_TEMPERATURE_SENSOR, new RandomTemperatureSensor());
         initializer.setInstancesForObject(FIRMWARE, new MyFirmware());
         initializer.setInstancesForObject(LWM2M_GATEWAY, new MyLwM2MGateway(), new MyLwM2MGateway());
-        initializer.setInstancesForObject(BINARY_APP_DATA_CONTAINER, new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer());
+        initializer.setInstancesForObject(BINARY_APP_DATA_CONTAINER, new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer());
+
+
         List<LwM2mObjectEnabler> enablers = initializer.createAll();
 
         // Create CoAP Config
@@ -834,6 +836,12 @@ public class LeshanClientDemo {
         commandsHelp.append(System.lineSeparator());
         LOG.info(commandsHelp.toString());
 
+        {
+            ObjectsInitializer objectsInitializer = new ObjectsInitializer(model);
+            objectsInitializer.setDummyInstancesForObject(9);
+            LwM2mObjectEnabler object = objectsInitializer.create(9);
+            client.getObjectTree().addObjectEnabler(object);
+        }
         // Start the client
         client.start();
 
