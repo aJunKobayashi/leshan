@@ -41,7 +41,7 @@ public class DefaultRegistrationEngineFactory implements RegistrationEngineFacto
     private boolean reconnectOnUpdate = false;
     private boolean resumeOnConnect = true;
     private boolean queueMode = false;
-    private ContentFormat preferredContentFormat = ContentFormat.SENML_CBOR;
+    private ContentFormat preferredContentFormat = ContentFormat.TLV;
     private String lwM2MVersion = LwM2m.Version.lastSupported().toString();
 
     public DefaultRegistrationEngineFactory() {
