@@ -1,5 +1,6 @@
 package org.eclipse.leshan.client.demo;
 
+
 import org.eclipse.leshan.client.resource.BaseInstanceEnabler;
 import org.eclipse.leshan.client.servers.ServerIdentity;
 import org.eclipse.leshan.core.model.ObjectModel;
@@ -9,11 +10,15 @@ import org.eclipse.leshan.core.node.LwM2mResourceInstance;
 import org.eclipse.leshan.core.node.ObjectLink;
 import org.eclipse.leshan.core.response.ReadResponse;
 import org.eclipse.leshan.core.response.WriteResponse;
+import org.eclipse.leshan.core.util.NamedThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MyBinaryAppContainer  extends BaseInstanceEnabler {
     private byte[][] mData;
@@ -22,6 +27,7 @@ public class MyBinaryAppContainer  extends BaseInstanceEnabler {
     private String mDataDescription;
     private String mDataFormat;
     private int mAppID;
+    private final ScheduledExecutorService scheduler;
 
 
     private static final List<Integer> supportedResources = Arrays.asList(0, 1, 2, 3, 4, 5);
@@ -67,6 +73,16 @@ public class MyBinaryAppContainer  extends BaseInstanceEnabler {
         this.mDataDescription = "description";
         this.mDataFormat = "plainText";
         this.mAppID = 3;
+
+        this.scheduler = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("BinaryAppDataContainer"));
+        scheduler.scheduleAtFixedRate(new Runnable() {
+
+            @Override
+            public void run() {
+                adjustTemperature();
+            }
+        }, 30, 30, TimeUnit.SECONDS);
+
     }
 
     public MyBinaryAppContainer(byte[][] data, int dataPriority, Date dataCreationTime, String dataDescription, String dataFormat, int appID) {
@@ -76,6 +92,22 @@ public class MyBinaryAppContainer  extends BaseInstanceEnabler {
         this.mDataDescription = dataDescription;
         this.mDataFormat = dataFormat;
         this.mAppID = appID;
+
+        this.scheduler = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("BinaryAppDataContainer"));
+        scheduler.scheduleAtFixedRate(new Runnable() {
+
+            @Override
+            public void run() {
+                adjustTemperature();
+            }
+        }, 30, 30, TimeUnit.SECONDS);
+
+    }
+
+    private void adjustTemperature() {
+        this.mData[0][0]++;
+        LOG.info("Notify: /19/x/0");
+        fireResourcesChange(ResourceID.DATA.val);
     }
 
     @Override
