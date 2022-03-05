@@ -841,6 +841,22 @@ public class LeshanClientDemo {
             objectsInitializer.setDummyInstancesForObject(9);
             LwM2mObjectEnabler object = objectsInitializer.create(9);
             client.getObjectTree().addObjectEnabler(object);
+
+            objectsInitializer = new ObjectsInitializer(model);
+            objectsInitializer.setDummyInstancesForObject(4);
+            object = objectsInitializer.create(4);
+            client.getObjectTree().addObjectEnabler(object);
+
+            objectsInitializer = new ObjectsInitializer(model);
+            objectsInitializer.setDummyInstancesForObject(7);
+            object = objectsInitializer.create(7);
+            client.getObjectTree().addObjectEnabler(object);
+
+            objectsInitializer = new ObjectsInitializer(model);
+            objectsInitializer.setDummyInstancesForObject(12);
+            object = objectsInitializer.create(12);
+            client.getObjectTree().addObjectEnabler(object);
+
         }
         // Start the client
         client.start();
