@@ -203,13 +203,20 @@ public class MyFirmware extends BaseInstanceEnabler {
         switch (id) {
             case UPDATE:
                 try {
-                    Thread.sleep(10_000);
-                    mUpdateResult = UpdateResultEnum.FirmwareUpdated.val;
-                    mState = StateEnum.IDLE.val;
-                    mPkgName = "Updated LeshanPkg";
-                    mPkgVersion = "2.0.0";
-                    fireResourcesChange(ResourceID.STATE.val, ResourceID.UPDATE_RESULT.val, ResourceID.PACKAGE_NAME.val, ResourceID.PACKAGE_VERSION.val);
-                } catch (InterruptedException e) {
+
+//                    Thread.sleep(10_000);
+                    final MyFirmware self = this;
+                    new Timer().schedule(new TimerTask(){
+                        @Override
+                        public void run() {
+                            mUpdateResult = UpdateResultEnum.FirmwareUpdated.val;
+                            mState = StateEnum.IDLE.val;
+                            mPkgName = "Updated LeshanPkg";
+                            mPkgVersion = "2.0.0";
+                            fireResourcesChange(ResourceID.STATE.val, ResourceID.UPDATE_RESULT.val, ResourceID.PACKAGE_NAME.val, ResourceID.PACKAGE_VERSION.val);
+                        }
+                    }, 10_000);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 return ExecuteResponse.success();
