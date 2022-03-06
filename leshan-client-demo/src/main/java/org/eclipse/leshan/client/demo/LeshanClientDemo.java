@@ -641,6 +641,7 @@ public class LeshanClientDemo {
         initializer.setInstancesForObject(LOCATION, locationInstance);
         initializer.setInstancesForObject(OBJECT_ID_TEMPERATURE_SENSOR, new RandomTemperatureSensor());
         initializer.setInstancesForObject(FIRMWARE, new MyFirmware());
+        initializer.setInstancesForObject(SOFTWARE_MANAGEMENT, new MySoftware());
         initializer.setInstancesForObject(LWM2M_GATEWAY, new MyLwM2MGateway(), new MyLwM2MGateway());
         initializer.setInstancesForObject(BINARY_APP_DATA_CONTAINER, new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer(), new MyBinaryAppContainer());
 
@@ -838,13 +839,8 @@ public class LeshanClientDemo {
 
         {
             ObjectsInitializer objectsInitializer = new ObjectsInitializer(model);
-            objectsInitializer.setDummyInstancesForObject(9);
-            LwM2mObjectEnabler object = objectsInitializer.create(9);
-            client.getObjectTree().addObjectEnabler(object);
-
-            objectsInitializer = new ObjectsInitializer(model);
             objectsInitializer.setDummyInstancesForObject(4);
-            object = objectsInitializer.create(4);
+            LwM2mObjectEnabler object = objectsInitializer.create(4);
             client.getObjectTree().addObjectEnabler(object);
 
             objectsInitializer = new ObjectsInitializer(model);
