@@ -162,8 +162,9 @@ public class MySoftware extends BaseInstanceEnabler {
             @Override
             public void run() {
                 LOG.info("Read on Firmware State is changed to Downloaded");
-                self.mState = StateEnum.DOWNLOADED.val;
-                fireResourcesChange(ResourceID.UPDATE_STATE.val);
+                self.mState = StateEnum.DELIVERED.val;
+                self.mUpdateResult = UpdateResultEnum.Initial.val;
+                fireResourcesChange(ResourceID.UPDATE_STATE.val, ResourceID.UPDATE_RESULT.val);
 
             }
         }, 30_000);
